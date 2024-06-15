@@ -5,6 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -31,6 +36,7 @@
                     <th>Amount</th>
                     <th>Category</th>
                     <th>Description</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="expenseList">
@@ -51,10 +57,40 @@
                 const newRow = document.createElement('tr');
                 newRow.innerHTML = `<td>${amount}</td>
                                     <td>${category}</td>
-                                    <td>${description}</td>`;
+                                    <td>${description}</td>
+                                    <td>
+                                        <button class="editBtn">Edit</button>
+                                        <button class="deleteBtn">Delete</button>
+                                    </td>`;
                 expenseList.appendChild(newRow);
+
+                // Add event listeners to the new buttons
+                newRow.querySelector('.editBtn').addEventListener('click', editExpense);
+                newRow.querySelector('.deleteBtn').addEventListener('click', deleteExpense);
             }
+
+            expenseForm.reset();
         });
+
+        function editExpense(event) {
+            const row = event.target.parentNode.parentNode;
+            const amount = row.children[0].textContent;
+            const category = row.children[1].textContent;
+            const description = row.children[2].textContent;
+
+            document.getElementById('amount').value = amount;
+            document.getElementById('category').value = category;
+            document.getElementById('description').value = description;
+
+            // Remove the current row
+            row.remove();
+        }
+
+        function deleteExpense(event) {
+            const row = event.target.parentNode.parentNode;
+            row.remove();
+        }
     </script>
 </body>
 </html>
+
